@@ -1,3 +1,6 @@
+import { Dispatch } from 'redux';
+import { StateInterface } from '../interfaces/state.interface';
+
 import {
   CartActionTypes,
   AddToCartInterface,
@@ -5,25 +8,32 @@ import {
   ItemsActionTypes,
   AddProductInterface,
 } from './action-types';
-import { NewProductInterface } from '../reducers/catalog-reducer';
+import { NewProductInterface } from '../interfaces/new-product.interface';
 
-export const addToCart = (id: number): AddToCartInterface => {
-  return {
+export const addToCart = (itemId: number) => (
+  dispatch: Dispatch,
+  getState: () => StateInterface,
+): AddToCartInterface => {
+  const { products, discounts } = getState().catalog;
+
+  return dispatch({
     type: CartActionTypes.ADD_TO_CART,
-    id,
-  };
+    itemId,
+    products,
+    discounts,
+  });
 };
 
-export const removeFromCart = (id: number): RemoveFromCartInterface => {
-  return {
+export const removeFromCart = (itemId: number) => (dispatch: Dispatch): RemoveFromCartInterface => {
+  return dispatch({
     type: CartActionTypes.REMOVE_FROM_CART,
-    id,
-  };
+    itemId,
+  });
 };
 
-export const addProduct = (product: NewProductInterface): AddProductInterface => {
-  return {
+export const addProduct = (product: NewProductInterface) => (dispatch: Dispatch): AddProductInterface => {
+  return dispatch({
     type: ItemsActionTypes.ADD_PRODUCT,
     product,
-  };
+  });
 };

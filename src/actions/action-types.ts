@@ -1,4 +1,5 @@
-import { NewProductInterface } from '../reducers/catalog-reducer';
+import { NewProductInterface } from '../interfaces/new-product.interface';
+import { DiscountInterface } from '../interfaces/discount.interface';
 
 export enum CartActionTypes {
   ADD_TO_CART = 'ADD_TO_CART',
@@ -11,12 +12,13 @@ export enum ItemsActionTypes {
 
 export interface AddToCartInterface {
   type: CartActionTypes.ADD_TO_CART;
-  id: number;
+  itemId: number;
+  discounts: DiscountInterface[];
 }
 
 export interface RemoveFromCartInterface {
   type: CartActionTypes.REMOVE_FROM_CART;
-  id: number;
+  itemId: number;
 }
 
 export interface AddProductInterface {

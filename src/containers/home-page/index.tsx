@@ -1,46 +1,65 @@
-import React, { Fragment } from 'react';
-import { Dispatch } from 'redux';
+import React, { ReactElement } from 'react';
+import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
+import { Container, Box, Typography } from '@material-ui/core';
 
 import { ProductsList } from '../../components/products-list';
 import { Cart } from '../../components/cart';
-import { addToCart, removeFromCart } from '../../actions';
-import { ProductInterface } from '../../reducers/catalog-reducer';
-import { DiscountInterface } from '../../reducers/catalog-reducer';
-import { CartInterface } from '../../reducers/cart-reducer';
+import { NewProduct } from '../../components/new-product';
 
-function HomePage({
-  products,
-  discounts,
-  cart,
-  addToCart,
-  removeFromCart,
-}: {
+import {
+  addToCart as addToCartAction,
+  removeFromCart as removeFromCartAction,
+  addProduct as addProductAction,
+} from '../../actions';
+import { ProductInterface } from '../../interfaces/product.interface';
+import { NewProductInterface } from '../../interfaces/new-product.interface';
+import { CartInterface } from '../../interfaces/cart.interface';
+import { StateInterface } from '../../interfaces/state.interface';
+
+interface StateProps {
   products: ProductInterface[];
-  discounts: DiscountInterface[];
   cart: CartInterface;
-  addToCart: (id: number) => void;
-  removeFromCart: (id: number) => void;
-}) {
+}
+
+interface DispatchProps {
+  addToCart: (itemId: number) => void;
+  removeFromCart: (itemId: number) => void;
+  addProduct: (product: NewProductInterface) => void;
+}
+
+type Props = StateProps & DispatchProps;
+
+function HomePage({ products, cart, addToCart, removeFromCart, addProduct }: Props): ReactElement {
   return (
-    <Fragment>
-      <div>Products:</div>
-      <ProductsList products={products} discounts={discounts} addToCard={addToCart} />
-      <div>Cart:</div>
-      <Cart products={products} discounts={discounts} cart={cart} removeFromCart={removeFromCart} />
-    </Fragment>
+    <Container>
+      <Box my={4}>
+        <Typography variant="h5">Products</Typography>
+        <ProductsList products={products} addToCard={addToCart} />
+      </Box>
+
+      <Box my={4}>
+        <Typography variant="h5">New product</Typography>
+        <NewProduct addProduct={addProduct} />
+      </Box>
+
+      <Box my={4}>
+        <Typography variant="h5">Cart</Typography>
+        <Cart products={products} cart={cart} removeFromCart={removeFromCart} />
+      </Box>
+    </Container>
   );
 }
 
-const mapStateToProps = (state: any) => ({
-  products: state.catalog.products,
-  discounts: state.catalog.discounts,
+const mapStateToProps = (state: StateInterface): StateProps => ({
+  products: [...state.catalog.discounts, ...state.catalog.products],
   cart: state.cart,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  addToCart: (id: number) => dispatch(addToCart(id)),
-  removeFromCart: (id: number) => dispatch(removeFromCart(id)),
+const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
+  addToCart: bindActionCreators(addToCartAction, dispatch),
+  removeFromCart: bindActionCreators(removeFromCartAction, dispatch),
+  addProduct: bindActionCreators(addProductAction, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomePage);

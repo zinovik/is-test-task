@@ -14,10 +14,10 @@
     "es6": true
   },
   "extends": [
-    "plugin:eslint:recommended",
+    "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:react/recommended",
-    "plugin:prettier",
-    "plugin:prettier/@typescript-eslint"
+    "prettier",
+    "prettier/@typescript-eslint"
   ]
 }
