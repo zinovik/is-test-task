@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { Container, Box, Typography } from '@material-ui/core';
+import { Container, Grid, Box } from '@material-ui/core';
 
 import { ProductsList } from '../../components/products-list';
 import { Cart } from '../../components/cart';
@@ -32,21 +32,24 @@ type Props = StateProps & DispatchProps;
 
 function HomePage({ products, cart, addToCart, removeFromCart, addProduct }: Props): ReactElement {
   return (
-    <Container>
-      <Box my={4}>
-        <Typography variant="h5">Products</Typography>
-        <ProductsList products={products} addToCard={addToCart} />
-      </Box>
+    <Container maxWidth="xl">
+      <Grid container>
+        <Grid item xs={12} md={8}>
+          <Box my={4}>
+            <ProductsList products={products} addToCard={addToCart} />
+          </Box>
 
-      <Box my={4}>
-        <Typography variant="h5">New product</Typography>
-        <NewProduct addProduct={addProduct} />
-      </Box>
+          <Box my={4}>
+            <NewProduct addProduct={addProduct} />
+          </Box>
+        </Grid>
 
-      <Box my={4}>
-        <Typography variant="h5">Cart</Typography>
-        <Cart products={products} cart={cart} removeFromCart={removeFromCart} />
-      </Box>
+        <Grid item xs={12} md={4}>
+          <Box my={4}>
+            <Cart products={products} cart={cart} removeFromCart={removeFromCart} />
+          </Box>
+        </Grid>
+      </Grid>
     </Container>
   );
 }
