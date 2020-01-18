@@ -8,7 +8,7 @@ import { ProductInterface } from '../../interfaces/product.interface';
 
 const useStyles = makeStyles(theme => ({
   cartContainer: {
-    maxWidth: theme.spacing(38),
+    width: theme.spacing(38),
     margin: theme.spacing(1),
   },
   textInCart: {

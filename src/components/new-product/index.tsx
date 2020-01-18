@@ -5,9 +5,23 @@ import { NewProductInterface } from '../../interfaces/new-product.interface';
 
 export function NewProduct({ addProduct }: { addProduct: (product: NewProductInterface) => void }): ReactElement {
   const [isOpen, setIsOpen] = useState(false);
+
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
   const [imageUrl, setImageUrl] = useState('');
+
+  const [nameErrorText, setNameErrorText] = useState('');
+  const [priceErrorText, setPriceErrorText] = useState('');
+
+  const isNameValid = (nameValue: string): boolean => {
+    const nameRegexp = new RegExp('[0-9a-zA-Z ]{3,50}');
+
+    return nameRegexp.test(nameValue);
+  };
+
+  const isPriceValid = (priceValue: string): boolean => {
+    return Boolean(Number(priceValue));
+  };
 
   const handleOpenDialogClick = (): void => {
     setIsOpen(true);
@@ -19,10 +33,18 @@ export function NewProduct({ addProduct }: { addProduct: (product: NewProductInt
 
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
     setName(event.target.value);
+
+    if (nameErrorText && isNameValid(name)) {
+      setNameErrorText('');
+    }
   };
 
   const handlePriceChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
     setPrice(event.target.value);
+
+    if (priceErrorText && isPriceValid(price)) {
+      setPriceErrorText('');
+    }
   };
 
   const handleImageUrlChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
@@ -30,11 +52,25 @@ export function NewProduct({ addProduct }: { addProduct: (product: NewProductInt
   };
 
   const handleAddProductClick = (): void => {
+    const nameError = isNameValid(name) ? '' : 'Invalid value';
+    const priceError = isPriceValid(price) ? '' : 'Invalid value';
+
+    if (nameError || priceError) {
+      setNameErrorText(nameError);
+      setPriceErrorText(priceError);
+
+      return;
+    }
+
     addProduct({
       name,
       price: Number(price),
       imageUrl,
     });
+
+    setName('');
+    setPrice('');
+    setImageUrl('');
 
     handleClose();
   };
@@ -51,18 +87,28 @@ export function NewProduct({ addProduct }: { addProduct: (product: NewProductInt
           <div>
             <TextField
               required
-              id="standard-required"
+              id="name-required"
               label="Name"
               value={name}
               onChange={handleNameChange}
               autoFocus
+              error={Boolean(nameErrorText)}
+              helperText={nameErrorText}
             />
           </div>
           <div>
-            <TextField required id="standard-required" label="Price" value={price} onChange={handlePriceChange} />
+            <TextField
+              required
+              id="price-required"
+              label="Price, $"
+              value={price}
+              onChange={handlePriceChange}
+              error={Boolean(priceErrorText)}
+              helperText={priceErrorText}
+            />
           </div>
           <div>
-            <TextField id="standard-required" label="Image URL" onChange={handleImageUrlChange} />
+            <TextField id="image-url" label="Image URL" onChange={handleImageUrlChange} />
           </div>
           <DialogActions>
             <Button size="small" color="primary" onClick={handleClose}>

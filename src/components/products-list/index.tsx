@@ -14,7 +14,7 @@ export function ProductsList({
   return (
     <>
       <Typography variant="h5">Products</Typography>
-      <Box display="flex" flexDirection="row" flexWrap="wrap" justifyContent="center">
+      <Box display="flex" flexWrap="wrap" justifyContent="center">
         {products.map(product => (
           <Product
             name={product.name}

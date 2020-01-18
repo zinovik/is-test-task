@@ -7,7 +7,7 @@ const NO_IMAGE_URL =
 
 const useStyles = makeStyles(theme => ({
   card: {
-    width: theme.spacing(34),
+    width: theme.spacing(38),
     margin: theme.spacing(1),
   },
 }));

@@ -1,14 +1,7 @@
 import { Dispatch } from 'redux';
 import { StateInterface } from '../interfaces/state.interface';
 
-import {
-  CartActionTypes,
-  AddToCartInterface,
-  RemoveFromCartInterface,
-  ItemsActionTypes,
-  AddProductInterface,
-} from './action-types';
-import { NewProductInterface } from '../interfaces/new-product.interface';
+import { CartActionTypes, AddToCartInterface, RemoveFromCartInterface } from './action-types';
 
 export const addToCart = (itemId: number) => (
   dispatch: Dispatch,
@@ -28,12 +21,5 @@ export const removeFromCart = (itemId: number) => (dispatch: Dispatch): RemoveFr
   return dispatch({
     type: CartActionTypes.REMOVE_FROM_CART,
     itemId,
-  });
-};
-
-export const addProduct = (product: NewProductInterface) => (dispatch: Dispatch): AddProductInterface => {
-  return dispatch({
-    type: ItemsActionTypes.ADD_PRODUCT,
-    product,
   });
 };
