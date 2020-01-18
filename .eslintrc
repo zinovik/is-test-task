@@ -20,5 +20,8 @@
     "prettier",
     "prettier/@typescript-eslint"
   ],
+  "rules": {
+    "@typescript-eslint/no-use-before-define": 1
+  },
   "globals": { "test": "readonly", "expect": "readonly" }
 }
