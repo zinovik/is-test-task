@@ -35,9 +35,7 @@ const checkDiscounts = (cartItems: CartItemInterface[], discounts: DiscountInter
     const productDiscount = discounts.find(discount => discount.productId === item.id);
 
     if (!productDiscount || item.amount < productDiscount.amount) {
-      items.push(item);
-
-      return items;
+      return addItems(items, item.id, item.amount);
     }
 
     const amountDiscount = Math.floor(item.amount / productDiscount.amount);
