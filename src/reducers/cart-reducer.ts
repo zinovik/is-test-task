@@ -41,14 +41,11 @@ const checkDiscounts = (cartItems: CartItemInterface[], discounts: DiscountInter
     const amountDiscount = Math.floor(item.amount / productDiscount.amount);
     const amountRemainder = item.amount % productDiscount.amount;
 
-    if (amountRemainder) {
-      items.push({
-        id: item.id,
-        amount: amountRemainder,
-      });
-    }
-
-    const itemsWithDiscount = addItems(items, productDiscount.id, amountDiscount);
+    const itemsWithDiscount = addItems(
+      amountRemainder ? addItems(items, item.id, amountRemainder) : items,
+      productDiscount.id,
+      amountDiscount,
+    );
 
     return itemsWithDiscount;
   }, []);
